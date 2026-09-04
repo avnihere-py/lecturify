@@ -58,6 +58,18 @@ Direct link: https://www.loom.com/share/1d6477ebb9e24c2f9e8108ede935783c
 
 ---
 
+## Presentation (How It Works)
+
+We created a PowerPoint presentation to explain how Lecturify works — the problem, solution, user flows, and feature overview for students, faculty, and directors.
+
+**[Download Lecturify Presentation (PPTX)](docs/lecturify-presentation.pptx)**
+
+On GitHub: [docs/lecturify-presentation.pptx](https://github.com/avnihere-py/lecturify/blob/main/docs/lecturify-presentation.pptx)
+
+Use this deck alongside the demo video when presenting or sharing the project with others.
+
+---
+
 ## Getting Started
 
 ```bash
