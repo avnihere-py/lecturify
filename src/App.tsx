@@ -7,9 +7,12 @@ import { StudentLogin } from './pages/StudentLogin'
 import { TeacherDashboard } from './pages/TeacherDashboard'
 import { TeacherLogin } from './pages/TeacherLogin'
 
+const routerBasename =
+  import.meta.env.BASE_URL === '/' ? undefined : import.meta.env.BASE_URL.replace(/\/$/, '')
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename}>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />

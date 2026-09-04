@@ -89,7 +89,16 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 in your browser.
+Open **https://avnihere-py.github.io/lecturify/** in your browser (live demo).
+
+For local development:
+
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173 (only on your machine while the dev server is running).
 
 To build for production:
 
