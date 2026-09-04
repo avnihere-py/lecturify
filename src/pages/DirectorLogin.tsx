@@ -3,40 +3,40 @@ import { useNavigate } from 'react-router-dom'
 import { AuthLayout } from '../components/AuthLayout'
 import { useAuth } from '../context/AuthContext'
 
-export function TeacherLogin() {
-  const { loginTeacher } = useAuth()
+export function DirectorLogin() {
+  const { loginDirector } = useAuth()
   const navigate = useNavigate()
-  const [employeeId, setEmployeeId] = useState('')
+  const [directorId, setDirectorId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    const err = loginTeacher(employeeId, password)
+    const err = loginDirector(directorId, password)
     if (err) {
       setError(err)
       return
     }
-    navigate('/teacher/dashboard')
+    navigate('/director/dashboard')
   }
 
   return (
     <AuthLayout variant="teacher">
       <div className="auth-card">
-        <h2 className="auth-card__title">Teacher Login</h2>
-        <p className="auth-card__desc">Log in with employee ID and password set by the Director.</p>
+        <h2 className="auth-card__title">Director Login</h2>
+        <p className="auth-card__desc">Sign in with your director ID</p>
 
         {error && <div className="alert alert--error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <label>
-            Employee ID
+            Director ID
             <input
               type="text"
-              placeholder="e.g. T001"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
+              placeholder="e.g. D001"
+              value={directorId}
+              onChange={(e) => setDirectorId(e.target.value)}
               required
             />
           </label>
@@ -55,7 +55,7 @@ export function TeacherLogin() {
 
         <details className="demo-hint">
           <summary>Demo credentials</summary>
-          <p>T001 / teacher123</p>
+          <p>D001 / director123</p>
         </details>
       </div>
     </AuthLayout>

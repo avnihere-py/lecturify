@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AuthLayout } from '../components/AuthLayout'
 import { useAuth } from '../context/AuthContext'
 import { enrollStudent } from '../lib/storage'
+import { enrollmentPasswordHint, generateStudentPassword } from '../lib/passwords'
 
 export function StudentEnroll() {
   const { data, setData, loginStudent } = useAuth()
   const navigate = useNavigate()
   const [enrollNo, setEnrollNo] = useState('')
   const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
   const [classId, setClassId] = useState(data.classes[0]?.id ?? '')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -19,14 +19,31 @@ export function StudentEnroll() {
     setError('')
     setSuccess('')
 
-    const result = enrollStudent(data, { enrollNo, name, password, classId })
+    const cls = data.classes.find((c) => c.id === classId)
+    if (!cls) {
+      setError('Select a valid class.')
+      return
+    }
+
+    const result = enrollStudent(data, {
+      enrollNo,
+      name,
+      departmentId: cls.departmentId,
+      department: cls.department,
+      branch: cls.branch,
+      courseId: cls.courseId,
+      course: cls.name,
+      section: cls.section,
+      teacherId: cls.teacherId,
+    })
     if (result.error) {
       setError(result.error)
       return
     }
     setData(result.data)
-    setSuccess('Enrollment successful! Logging you in...')
-    const loginErr = loginStudent(enrollNo, password)
+    const autoPassword = generateStudentPassword(enrollNo)
+    setSuccess(`Enrollment successful! Your password is ${autoPassword}. Logging you in...`)
+    const loginErr = loginStudent(enrollNo, autoPassword)
     if (!loginErr) {
       setTimeout(() => navigate('/student/dashboard'), 800)
     }
@@ -46,7 +63,7 @@ export function StudentEnroll() {
             Enrollment Number
             <input
               type="text"
-              placeholder="e.g. EN2023045"
+              placeholder="e.g. 04801242026"
               value={enrollNo}
               onChange={(e) => setEnrollNo(e.target.value)}
               required
@@ -72,17 +89,7 @@ export function StudentEnroll() {
               ))}
             </select>
           </label>
-          <label>
-            Create Password
-            <input
-              type="password"
-              placeholder="Choose a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-            />
-          </label>
+          <p className="password-preview">{enrollmentPasswordHint(enrollNo)}</p>
           <button type="submit" className="btn btn--primary">Enroll &amp; Login</button>
         </form>
 

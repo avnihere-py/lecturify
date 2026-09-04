@@ -5,13 +5,7 @@ interface LogoProps {
 export function Logo({ size = 'md' }: LogoProps) {
   return (
     <div className={`logo logo--${size}`}>
-      <img src="/logo.png" alt="Lecturify" className="logo__img" />
-      {size !== 'sm' && (
-        <div className="logo__text">
-          <h1 className="logo__name">Lecturify</h1>
-          <p className="logo__tagline">Check your schedule without hustle</p>
-        </div>
-      )}
+      <img src="/logo.png" alt="Lecturify — Check your schedule without hustle" className="logo__img" />
     </div>
   )
 }

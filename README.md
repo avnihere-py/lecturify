@@ -17,8 +17,8 @@ Open http://localhost:5173
 
 | Role | Login | Password |
 |------|-------|----------|
-| Student | EN2021001 | student123 |
-| Student (CR) | EN2021002 | student123 |
+| Student | 04801242026 | student480 |
+| Student (CR) | 05801242026 | student580 |
 | Teacher | T001 | teacher123 |
 
 ### Features

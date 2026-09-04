@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AuthLayout } from '../components/AuthLayout'
 import { useAuth } from '../context/AuthContext'
 
@@ -25,7 +25,9 @@ export function StudentLogin() {
     <AuthLayout variant="student">
       <div className="auth-card">
         <h2 className="auth-card__title">Student Login</h2>
-        <p className="auth-card__desc">Sign in with your enrollment number</p>
+          <p className="auth-card__desc">
+            Log in with 11-digit enrollment no. Password: student + digits 2–4 (e.g. student480).
+          </p>
 
         {error && <div className="alert alert--error">{error}</div>}
 
@@ -34,7 +36,7 @@ export function StudentLogin() {
             Enrollment Number
             <input
               type="text"
-              placeholder="e.g. EN2021001"
+              placeholder="e.g. 04801242026"
               value={enrollNo}
               onChange={(e) => setEnrollNo(e.target.value)}
               required
@@ -54,10 +56,12 @@ export function StudentLogin() {
         </form>
 
         <div className="auth-card__footer">
-          <p>Don't have an account? <Link to="/student/enroll">Enroll now</Link></p>
+          <p className="text-muted">No self-registration. Ask Faculty or your Class Rep for an account.</p>
           <details className="demo-hint">
             <summary>Demo credentials</summary>
-            <p>EN2021001 / student123</p>
+            <p>04801242026 / student480 (Neha — CR)</p>
+            <p>05801242026 / student580 (Priya Sharma)</p>
+            <p>06801242026 / student680 (Amit Patel)</p>
           </details>
         </div>
       </div>

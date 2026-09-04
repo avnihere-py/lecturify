@@ -1,8 +1,15 @@
 import { useMemo, useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import { CampusBanner } from '../components/CampusBanner'
+import { StudentClassChat } from '../components/ClassChat'
+import { ContactProfileForm } from '../components/ContactProfileForm'
+import { CrTools } from '../components/CrTools'
+import { DashboardShell } from '../components/DashboardShell'
+import { StudentProfileCard } from '../components/StudentProfileCard'
 import { UpdateCard } from '../components/UpdateCard'
-import { getClassForStudent, isCR, useAuth } from '../context/AuthContext'
-import { addUpdate } from '../lib/storage'
+import { isCR } from '../lib/roles'
+import { useAuth } from '../context/AuthContext'
+import { addUpdate, updateStudentProfile } from '../lib/storage'
 import type { UpdateType } from '../types'
 
 const FILTERS: { key: UpdateType | 'all'; label: string }[] = [
@@ -13,27 +20,16 @@ const FILTERS: { key: UpdateType | 'all'; label: string }[] = [
   { key: 'holiday', label: 'Holidays' },
 ]
 
-const UPDATE_TYPES: { value: UpdateType; label: string }[] = [
-  { value: 'cancellation', label: 'Lecture Cancelled' },
-  { value: 'schedule', label: 'Schedule Change' },
-  { value: 'exam', label: 'Exam Notice' },
-  { value: 'holiday', label: 'Holiday' },
-  { value: 'general', label: 'General Notice' },
-]
-
 export function StudentDashboard() {
   const { user, data, setData, logout } = useAuth()
   const [filter, setFilter] = useState<UpdateType | 'all'>('all')
-  const [showPost, setShowPost] = useState(false)
-  const [title, setTitle] = useState('')
-  const [message, setMessage] = useState('')
-  const [updateType, setUpdateType] = useState<UpdateType>('general')
   const [postSuccess, setPostSuccess] = useState('')
+  const [activeTab, setActiveTab] = useState<'feed' | 'profile'>('feed')
+  const [profileMsg, setProfileMsg] = useState('')
 
-  if (!user || user.role !== 'student') return <Navigate to="/student/login" replace />
+  if (!user || user.role !== 'student') return <Navigate to="/" replace />
 
   const student = user.data
-  const classInfo = getClassForStudent(student, data)
   const cr = isCR(student, data)
 
   const updates = useMemo(() => {
@@ -44,105 +40,138 @@ export function StudentDashboard() {
     return classUpdates.filter((u) => u.type === filter)
   }, [data.updates, student.classId, filter])
 
-  function handlePost(e: React.FormEvent) {
-    e.preventDefault()
+  function handleCrPost(payload: { title: string; message: string; type: UpdateType }) {
     const newUpdate = {
       id: `upd-${Date.now()}`,
       classId: student.classId,
-      title,
-      message,
-      type: updateType,
+      title: payload.title,
+      message: payload.message,
+      type: payload.type,
       postedBy: { id: student.id, name: student.name, role: 'cr' as const },
       createdAt: new Date().toISOString(),
     }
     const next = addUpdate(data, newUpdate)
     setData(next)
-    setTitle('')
-    setMessage('')
-    setShowPost(false)
     setPostSuccess('Update posted on behalf of your class!')
     setTimeout(() => setPostSuccess(''), 3000)
   }
 
+  function handleProfileSave(profile: { collegeEmail?: string; phone?: string; dateOfBirth?: string }) {
+    const result = updateStudentProfile(data, student.id, profile)
+    if (result.error) {
+      setProfileMsg(result.error)
+      return
+    }
+    setData(result.data)
+    setProfileMsg('Profile updated successfully.')
+    setTimeout(() => setProfileMsg(''), 3000)
+  }
+
   return (
-    <div className="dashboard">
-      <header className="dashboard__header">
-        <div>
-          <h1>Official Updates</h1>
-          <p className="dashboard__class">
-            {classInfo?.name} — Section {classInfo?.section}
-            {cr && <span className="cr-badge">You are Class Rep</span>}
-          </p>
-        </div>
-        <div className="dashboard__user">
-          <span>Hi, {student.name}</span>
-          <button onClick={logout} className="btn btn--ghost btn--sm">Logout</button>
-        </div>
-      </header>
+    <DashboardShell
+      role="Student"
+      title="Official Updates"
+      subtitle={
+        <>
+          {student.course} — Section {student.section}
+          {cr && <span className="cr-badge">You are Class Rep</span>}
+        </>
+      }
+      userName={student.name}
+      onLogout={logout}
+      headerExtra={
+        cr ? (
+          <CrTools
+            student={student}
+            data={data}
+            setData={setData}
+            onPost={handleCrPost}
+          />
+        ) : undefined
+      }
+    >
+      <CampusBanner />
 
-      <div className="info-banner">
-        <span className="info-banner__icon">✓</span>
-        Only verified updates from your teacher{cr ? ' or you (as CR)' : ''} appear here — no random messages.
-      </div>
+      <nav className="tab-bar tab-bar--scroll">
+        <button
+          className={`tab-btn ${activeTab === 'feed' ? 'tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('feed')}
+        >
+          Updates
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'profile' ? 'tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('profile')}
+        >
+          My Profile
+          {!student.profileComplete && <span className="tab-badge">!</span>}
+        </button>
+      </nav>
 
-      {postSuccess && <div className="alert alert--success">{postSuccess}</div>}
+      {activeTab === 'feed' && (
+        <>
+          <div className="info-banner">
+            <span className="info-banner__icon">✓</span>
+            Only verified updates from your teacher{cr ? ' or you (as CR)' : ''} appear here.
+          </div>
 
-      {cr && (
-        <div className="cr-actions">
-          {!showPost ? (
-            <button className="btn btn--primary" onClick={() => setShowPost(true)}>
-              Post Update as Class Rep
-            </button>
-          ) : (
-            <form onSubmit={handlePost} className="post-form post-form--inline">
-              <h3>Post Official Update (CR)</h3>
-              <label>
-                Type
-                <select value={updateType} onChange={(e) => setUpdateType(e.target.value as UpdateType)}>
-                  {UPDATE_TYPES.map((t) => (
-                    <option key={t.value} value={t.value}>{t.label}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Title
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-              </label>
-              <label>
-                Message
-                <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={3} required />
-              </label>
-              <div className="btn-row">
-                <button type="submit" className="btn btn--primary">Post</button>
-                <button type="button" className="btn btn--ghost" onClick={() => setShowPost(false)}>Cancel</button>
-              </div>
-            </form>
+          {!student.profileComplete && (
+            <div className="alert alert--warn">
+              Please complete your profile — add college email, phone, and date of birth in{' '}
+              <button type="button" className="inline-link" onClick={() => setActiveTab('profile')}>
+                My Profile
+              </button>
+              .
+            </div>
           )}
+
+          {postSuccess && <div className="alert alert--success">{postSuccess}</div>}
+
+          <div className="filter-bar">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                className={`filter-btn ${filter === f.key ? 'filter-btn--active' : ''}`}
+                onClick={() => setFilter(f.key)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="updates-feed">
+            {updates.length === 0 ? (
+              <div className="empty-state">
+                <span>📭</span>
+                <p>No updates yet for your class.</p>
+              </div>
+            ) : (
+              updates.map((u) => <UpdateCard key={u.id} {...u} />)
+            )}
+          </div>
+        </>
+      )}
+
+      {activeTab === 'profile' && (
+        <div className="manage-panel profile-panel">
+          <h2>My Profile</h2>
+          {profileMsg && (
+            <div className={`alert ${profileMsg.includes('success') ? 'alert--success' : 'alert--error'}`}>
+              {profileMsg}
+            </div>
+          )}
+
+          <StudentProfileCard student={student} isCr={cr} />
+
+          <h3 className="manage-panel__subtitle">Update contact details</h3>
+          <p className="post-panel__desc">
+            Branch, department, course, section, enrollment number, and name cannot be changed.
+          </p>
+          <ContactProfileForm profile={student.profile} onSave={handleProfileSave} />
         </div>
       )}
 
-      <div className="filter-bar">
-        {FILTERS.map((f) => (
-          <button
-            key={f.key}
-            className={`filter-btn ${filter === f.key ? 'filter-btn--active' : ''}`}
-            onClick={() => setFilter(f.key)}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="updates-feed">
-        {updates.length === 0 ? (
-          <div className="empty-state">
-            <span>📭</span>
-            <p>No updates yet for your class.</p>
-          </div>
-        ) : (
-          updates.map((u) => <UpdateCard key={u.id} {...u} />)
-        )}
-      </div>
-    </div>
+      <StudentClassChat student={student} isCr={cr} data={data} setData={setData} />
+    </DashboardShell>
   )
 }
