@@ -174,7 +174,17 @@
       font-size: 9.5pt;
       word-break: break-all;
       color: var(--ink);
-      text-decoration: none;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .link-card a.url:hover {
+      color: var(--rose-dark);
+    }
+
+    .link-card.primary a.url {
+      color: #fff;
+      font-weight: 600;
     }
 
     .link-card .desc {
@@ -367,6 +377,17 @@
       color: var(--muted);
     }
 
+    .footer a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+    }
+
+    .cover-meta a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      font-size: 9pt;
+    }
+
     .page-break { page-break-before: always; }
 
     @media print {
@@ -401,7 +422,7 @@
         </div>
         <div>
           <strong>Repository</strong>
-          Public — avnihere-py/lecturify
+          <a href="https://github.com/avnihere-py/lecturify">github.com/avnihere-py/lecturify</a>
         </div>
         <div>
           <strong>Team</strong>
@@ -417,27 +438,32 @@
     <div class="links-grid">
       <div class="link-card primary">
         <div class="label">GitHub Repository (Source Code)</div>
-        <div class="url">https://github.com/avnihere-py/lecturify</div>
+        <a class="url" href="https://github.com/avnihere-py/lecturify">https://github.com/avnihere-py/lecturify</a>
         <div class="desc">Public repo — view code, clone, and run locally. Read-only for visitors.</div>
       </div>
       <div class="link-card">
         <div class="label">Documentation</div>
-        <div class="url">github.com/avnihere-py/lecturify/blob/main/DOCUMENTATION.md</div>
+        <a class="url" href="https://github.com/avnihere-py/lecturify/blob/main/DOCUMENTATION.md">github.com/avnihere-py/lecturify/blob/main/DOCUMENTATION.md</a>
         <div class="desc">Full project documentation — problem, solution, credentials, features.</div>
       </div>
       <div class="link-card">
         <div class="label">Demo Video (Loom)</div>
-        <div class="url">loom.com/share/1d6477ebb9e24c2f9e8108ede935783c</div>
+        <a class="url" href="https://www.loom.com/share/1d6477ebb9e24c2f9e8108ede935783c">loom.com/share/1d6477ebb9e24c2f9e8108ede935783c</a>
         <div class="desc">Walkthrough of Lecturify — login flows, dashboards, and key features.</div>
       </div>
       <div class="link-card">
         <div class="label">Presentation (PPTX)</div>
-        <div class="url">github.com/avnihere-py/lecturify/blob/main/docs/lecturify-presentation.pptx</div>
+        <a class="url" href="https://github.com/avnihere-py/lecturify/blob/main/docs/lecturify-presentation.pptx">github.com/avnihere-py/lecturify/blob/main/docs/lecturify-presentation.pptx</a>
         <div class="desc">Slide deck explaining how Lecturify works — problem, solution, and user flows.</div>
       </div>
       <div class="link-card">
+        <div class="label">Hackathon PDF</div>
+        <a class="url" href="https://github.com/avnihere-py/lecturify/blob/main/docs/Lecturify-Hackathon-Submission.pdf">github.com/avnihere-py/lecturify/blob/main/docs/Lecturify-Hackathon-Submission.pdf</a>
+        <div class="desc">This submission brief — share with judges and mentors.</div>
+      </div>
+      <div class="link-card">
         <div class="label">Run Locally</div>
-        <div class="url">localhost:5173</div>
+        <a class="url" href="http://localhost:5173">http://localhost:5173</a>
         <div class="desc">After <code>npm install</code> and <code>npm run dev</code> — see Quick Start below.</div>
       </div>
     </div>
@@ -572,7 +598,9 @@
 cd lecturify
 npm install
 npm run dev</pre>
-        <p style="font-size: 8.5pt; margin-top: 6px; color: var(--muted);">Open <strong>http://localhost:5173</strong> in your browser.</p>
+        <p style="font-size: 8.5pt; margin-top: 6px; color: var(--muted);">
+          Open <a href="http://localhost:5173" style="color: var(--rose-dark); text-decoration: underline;">http://localhost:5173</a> in your browser.
+        </p>
       </div>
     </div>
 
@@ -581,8 +609,9 @@ npm run dev</pre>
     </div>
 
     <div class="footer">
-      Lecturify · Hackathon Submission · github.com/avnihere-py/lecturify ·
-      Demo: loom.com/share/1d6477ebb9e24c2f9e8108ede935783c
+      Lecturify · Hackathon Submission ·
+      <a href="https://github.com/avnihere-py/lecturify">github.com/avnihere-py/lecturify</a> ·
+      Demo: <a href="https://www.loom.com/share/1d6477ebb9e24c2f9e8108ede935783c">loom.com/share/1d6477ebb9e24c2f9e8108ede935783c</a>
     </div>
 
   </div>
