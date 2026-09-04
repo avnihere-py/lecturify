@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lecturify — Hackathon Submission</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap');
+
+    :root {
+      --cream: #fff8f3;
+      --rose: #b76e79;
+      --rose-dark: #9a5560;
+      --rose-light: #f3e4e6;
+      --ink: #2d2428;
+      --muted: #6b5f64;
+      --card: #ffffff;
+      --border: #ecd9dc;
+      --accent: #d48994;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.55;
+      font-size: 10.5pt;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 14mm 16mm;
+      background: var(--cream);
+    }
+
+    /* Cover */
+    .cover {
+      text-align: center;
+      padding: 28mm 12mm 22mm;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(165deg, #fff 0%, var(--cream) 55%, var(--rose-light) 100%);
+      margin-bottom: 10mm;
+      page-break-after: always;
+    }
+
+    .cover-badge {
+      display: inline-block;
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+      background: var(--rose-light);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .cover h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 42pt;
+      font-weight: 400;
+      color: var(--rose-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .cover .tagline {
+      font-size: 14pt;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 22px;
+    }
+
+    .cover .pitch {
+      font-size: 11pt;
+      max-width: 130mm;
+      margin: 0 auto 24px;
+      color: var(--ink);
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 150mm;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .cover-meta div {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 9pt;
+    }
+
+    .cover-meta strong {
+      display: block;
+      color: var(--rose-dark);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+
+    /* Sections */
+    h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 18pt;
+      color: var(--rose-dark);
+      margin: 18px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--rose-light);
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 11pt;
+      color: var(--rose);
+      margin: 14px 0 6px;
+      page-break-after: avoid;
+    }
+
+    p { margin-bottom: 8px; color: var(--ink); }
+
+    .lead {
+      font-size: 11pt;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* Link cards */
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0 16px;
+    }
+
+    .link-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      page-break-inside: avoid;
+    }
+
+    .link-card.primary {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 100%);
+      border: none;
+      color: #fff;
+    }
+
+    .link-card.primary .label { color: rgba(255,255,255,0.85); }
+    .link-card.primary .url { color: #fff; font-weight: 600; }
+
+    .link-card .label {
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--rose);
+      margin-bottom: 4px;
+    }
+
+    .link-card .url {
+      font-size: 9.5pt;
+      word-break: break-all;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .link-card .desc {
+      font-size: 8.5pt;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .link-card.primary .desc { color: rgba(255,255,255,0.9); }
+
+    /* Problem list */
+    .problem-list {
+      list-style: none;
+      margin: 8px 0 14px;
+    }
+
+    .problem-list li {
+      position: relative;
+      padding: 8px 10px 8px 28px;
+      margin-bottom: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+
+    .problem-list li::before {
+      content: '!';
+      position: absolute;
+      left: 10px;
+      top: 9px;
+      width: 14px;
+      height: 14px;
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      font-weight: 700;
+      font-size: 8pt;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 14px;
+    }
+
+    .problem-list strong { color: var(--rose-dark); }
+
+    /* Solution table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background: var(--rose);
+      color: #fff;
+      text-align: left;
+      padding: 8px 10px;
+      font-weight: 600;
+    }
+
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child { border-radius: 0 8px 0 0; }
+
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      vertical-align: top;
+    }
+
+    tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+    tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+
+    td:first-child {
+      font-weight: 600;
+      color: var(--rose-dark);
+      width: 28%;
+    }
+
+    /* Credentials */
+    .creds-table th { font-size: 8.5pt; }
+    .creds-table td { font-family: 'Consolas', 'Courier New', monospace; font-size: 9pt; }
+
+    /* Role columns */
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+
+    .role-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      page-break-inside: avoid;
+    }
+
+    .role-card h4 {
+      font-size: 10pt;
+      color: var(--rose-dark);
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .role-card ul {
+      padding-left: 14px;
+      font-size: 8.5pt;
+      color: var(--muted);
+    }
+
+    .role-card li { margin-bottom: 3px; }
+
+    /* Tech + quick start */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      page-break-inside: avoid;
+    }
+
+    .box h4 {
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--rose);
+      margin-bottom: 8px;
+    }
+
+    code, pre {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8.5pt;
+      background: #f9f0f2;
+      border-radius: 6px;
+    }
+
+    pre {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tech-tag {
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      font-size: 8pt;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .quote {
+      text-align: center;
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 13pt;
+      color: var(--rose-dark);
+      padding: 14px 20px;
+      margin: 16px 0;
+      border-left: 4px solid var(--rose);
+      background: var(--card);
+      border-radius: 0 10px 10px 0;
+      page-break-inside: avoid;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 8pt;
+      color: var(--muted);
+    }
+
+    .page-break { page-break-before: always; }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 10mm 12mm; max-width: none; }
+      .cover { border: 1px solid var(--border); }
+      a { color: var(--ink); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- COVER -->
+    <section class="cover">
+      <div class="cover-badge">Hackathon Submission</div>
+      <h1>Lecturify</h1>
+      <p class="tagline">Check your schedule without hustle.</p>
+      <p class="pitch">
+        A role-based college platform for <strong>verified official updates</strong>,
+        academic administration, student directory, and digital attendance —
+        built for students, faculty, and directors.
+      </p>
+      <div class="cover-meta">
+        <div>
+          <strong>Project Type</strong>
+          Web Application (React + TypeScript)
+        </div>
+        <div>
+          <strong>Status</strong>
+          Working Demo with Pre-loaded Data
+        </div>
+        <div>
+          <strong>Repository</strong>
+          Public — avnihere-py/lecturify
+        </div>
+        <div>
+          <strong>Team</strong>
+          Lecturify Hackathon Entry
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <h2>Quick Links — Everything in One Place</h2>
+    <p class="lead">Share these links with judges, mentors, and reviewers.</p>
+
+    <div class="links-grid">
+      <div class="link-card primary">
+        <div class="label">GitHub Repository (Source Code)</div>
+        <div class="url">https://github.com/avnihere-py/lecturify</div>
+        <div class="desc">Public repo — view code, clone, and run locally. Read-only for visitors.</div>
+      </div>
+      <div class="link-card">
+        <div class="label">Documentation</div>
+        <div class="url">github.com/avnihere-py/lecturify/blob/main/DOCUMENTATION.md</div>
+        <div class="desc">Full project documentation — problem, solution, credentials, features.</div>
+      </div>
+      <div class="link-card">
+        <div class="label">Demo Video (Loom)</div>
+        <div class="url">loom.com/share/1d6477ebb9e24c2f9e8108ede935783c</div>
+        <div class="desc">Walkthrough of Lecturify — login flows, dashboards, and key features.</div>
+      </div>
+      <div class="link-card">
+        <div class="label">Presentation (PPTX)</div>
+        <div class="url">github.com/avnihere-py/lecturify/blob/main/docs/lecturify-presentation.pptx</div>
+        <div class="desc">Slide deck explaining how Lecturify works — problem, solution, and user flows.</div>
+      </div>
+      <div class="link-card">
+        <div class="label">Run Locally</div>
+        <div class="url">localhost:5173</div>
+        <div class="desc">After <code>npm install</code> and <code>npm run dev</code> — see Quick Start below.</div>
+      </div>
+    </div>
+
+    <!-- PROBLEM -->
+    <h2>The Problem</h2>
+    <p class="lead">Colleges struggle with communication chaos and manual administration every day.</p>
+    <ul class="problem-list">
+      <li><strong>Scattered communication</strong> — Cancellations, exams, and holidays get lost in WhatsApp groups and informal chats.</li>
+      <li><strong>No single source of truth</strong> — Students can't tell official notices from random messages.</li>
+      <li><strong>Manual academic admin</strong> — Directors and faculty lack one place for departments, rosters, and assignments.</li>
+      <li><strong>Attendance friction</strong> — Paper sheets and spreadsheets fail when Theory and Lab need separate records same day.</li>
+      <li><strong>Role confusion</strong> — Students, faculty, directors, and CRs all need different tools — but get the same generic channels.</li>
+    </ul>
+
+    <!-- SOLUTION -->
+    <h2>Our Solution</h2>
+    <p class="lead">Lecturify centralizes verified college communication and administration in one clean web app.</p>
+
+    <table>
+      <thead>
+        <tr><th>Area</th><th>What Lecturify Does</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Verified Updates</td>
+          <td>Teachers and CRs post official class updates. Students see a filtered feed — cancellations, exams, schedules, holidays only.</td>
+        </tr>
+        <tr>
+          <td>Role-Based Access</td>
+          <td>Separate portals for Student, Faculty, and Director with tailored dashboards and permissions.</td>
+        </tr>
+        <tr>
+          <td>Director Admin</td>
+          <td>Academic setup, student directory with profiles, faculty ID management, campus-wide alerts.</td>
+        </tr>
+        <tr>
+          <td>Faculty Tools</td>
+          <td>Post updates, digital attendance, student roster, subject teachers, CR management.</td>
+        </tr>
+        <tr>
+          <td>Attendance Sheets</td>
+          <td>Theory / Lab sessions, draft &amp; lock, history view, multiple sheets per day.</td>
+        </tr>
+        <tr>
+          <td>Demo Ready</td>
+          <td>Pre-loaded director, 2 faculty, 10 students, Robotics &amp; AI class — explore instantly.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- DEMO CREDENTIALS -->
+    <h2>Demo Credentials</h2>
+    <p class="lead">No setup required — sign in with these accounts to explore every role.</p>
+
+    <table class="creds-table">
+      <thead>
+        <tr><th>Role</th><th>Login ID</th><th>Password</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Director</td><td>D001</td><td>director123</td><td>Full admin — academics, directory, alerts</td></tr>
+        <tr><td>Faculty</td><td>T001</td><td>teacher123</td><td>Dr. Meera Singh — class teacher</td></tr>
+        <tr><td>Faculty</td><td>T003</td><td>teacher123</td><td>Subject teacher</td></tr>
+        <tr><td>Student (CR)</td><td>04801242026</td><td>student480</td><td>Neha — Class Representative</td></tr>
+        <tr><td>Student</td><td>05801242026</td><td>student580</td><td>Priya</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 8.5pt; color: var(--muted); margin-top: 6px;">
+      Student password pattern: <code>student</code> + digits 2–4 of enrollment no. (e.g. 04801242026 → student480)
+    </p>
+
+    <!-- FEATURES BY ROLE -->
+    <h2>Features by Role</h2>
+    <div class="roles">
+      <div class="role-card">
+        <h4>Student</h4>
+        <ul>
+          <li>Official class update feed</li>
+          <li>Campus alerts</li>
+          <li>Filter by update type</li>
+          <li>Class chat</li>
+          <li>Profile management</li>
+          <li>CR posting tools (if assigned)</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h4>Faculty</h4>
+        <ul>
+          <li>Post verified updates</li>
+          <li>Digital attendance (Theory/Lab)</li>
+          <li>Lock sheets &amp; view history</li>
+          <li>Student roster &amp; profiles</li>
+          <li>Add subject teachers</li>
+          <li>Assign Class Representative</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h4>Director</h4>
+        <ul>
+          <li>Campus-wide alerts</li>
+          <li>Department &amp; program setup</li>
+          <li>Student directory + filters</li>
+          <li>Expandable student profiles</li>
+          <li>Faculty ID overview</li>
+          <li>Academic structure management</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TECH + QUICK START -->
+    <h2>Tech Stack &amp; Quick Start</h2>
+    <div class="two-col">
+      <div class="box">
+        <h4>Technology</h4>
+        <div class="tech-tags">
+          <span class="tech-tag">React 19</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">Vite</span>
+          <span class="tech-tag">React Router</span>
+          <span class="tech-tag">localStorage</span>
+          <span class="tech-tag">sessionStorage</span>
+        </div>
+        <p style="font-size: 8.5pt; margin-top: 10px; color: var(--muted);">
+          Frontend-only demo — no backend server required. Data persists in the browser for a realistic experience.
+        </p>
+      </div>
+      <div class="box">
+        <h4>Run the App</h4>
+        <pre>git clone https://github.com/avnihere-py/lecturify.git
+cd lecturify
+npm install
+npm run dev</pre>
+        <p style="font-size: 8.5pt; margin-top: 6px; color: var(--muted);">Open <strong>http://localhost:5173</strong> in your browser.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      Official college updates — verified alerts only.<br />No hustle, no noise.
+    </div>
+
+    <div class="footer">
+      Lecturify · Hackathon Submission · github.com/avnihere-py/lecturify ·
+      Demo: loom.com/share/1d6477ebb9e24c2f9e8108ede935783c
+    </div>
+
+  </div>
+</body>
+</html>

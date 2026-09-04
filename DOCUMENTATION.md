@@ -70,6 +70,18 @@ Use this deck alongside the demo video when presenting or sharing the project wi
 
 ---
 
+## Hackathon Submission (PDF)
+
+A single-page hackathon brief with all links, problem, solution, demo credentials, features, and quick-start instructions — ready to share with judges.
+
+**[Download Hackathon Submission PDF](docs/Lecturify-Hackathon-Submission.pdf)**
+
+On GitHub: [docs/Lecturify-Hackathon-Submission.pdf](https://github.com/avnihere-py/lecturify/blob/main/docs/Lecturify-Hackathon-Submission.pdf)
+
+To regenerate after edits: `npm run pdf:hackathon`
+
+---
+
 ## Getting Started
 
 ```bash
